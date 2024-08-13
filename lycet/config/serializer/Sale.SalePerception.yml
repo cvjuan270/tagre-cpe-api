@@ -1,0 +1,12 @@
+Greenter\Model\Sale\SalePerception:
+    properties:
+        codReg:
+            type: string
+        porcentaje:
+            type: float
+        mtoBase:
+            type: float
+        mto:
+            type: float
+        mtoTotal:
+            type: float

@@ -1,0 +1,16 @@
+Greenter\Model\Despatch\Transportist:
+    properties:
+        tipoDoc:
+            type: string
+        numDoc:
+            type: string
+        rznSocial:
+            type: string
+        nroMtc:
+            type: string
+        placa:
+            type: string
+        choferTipoDoc:
+            type: string
+        choferDoc:
+            type: string

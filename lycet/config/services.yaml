@@ -1,0 +1,141 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'es'
+    container.dumper.inline_factories: true
+    container.dumper.inline_class_loader: true
+    token: '%env(CLIENT_TOKEN)%'
+    data_path: '%kernel.project_dir%/data'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+        shared: false
+
+    Psr\Container\ContainerInterface:
+        alias: service_container
+
+    Greenter\Report\Resolver\DefaultTemplateResolver:
+        autowire: true
+
+    Greenter\Report\Resolver\TemplateResolverInterface:
+        alias: Greenter\Report\Resolver\DefaultTemplateResolver
+        public: true
+
+    Greenter\Report\Render\QrRender:
+        autowire: true
+
+    Greenter\Report\XmlUtils:
+        public: true
+
+    Greenter\Report\HtmlReport:
+        arguments:
+            - '%env(default::TEMPLATESPDF_PATH)%'
+            - cache: '%kernel.cache_dir%'
+              strict_variables: true
+
+    Greenter\Report\PdfReport:
+        arguments: ['@App\Service\HtmlReportDecorator']
+        calls:
+            - [setBinPath, ['%env(WKHTMLTOPDF_PATH)%']]
+            - [setOptions, [['no-outline', 'print-media-type']]]
+
+    App\Service\PdfReportDecorator:
+        public: true
+        arguments:
+            - '@App\Service\HtmlReportDecorator'
+            - '%env(WKHTMLTOPDF_PATH)%'
+            - ['no-outline', 'print-media-type']
+
+    App\Service\AppDocumentValidator:
+        autowire: true
+
+    App\Service\DocumentRequest:
+        autowire: true
+
+    Greenter\Validator\DocumentValidatorInterface: '@App\Service\AppDocumentValidator'
+    Greenter\Report\ReportInterface:
+        alias: App\Service\PdfReportDecorator
+        public: true
+
+    App\Service\DocumentRequestInterface: '@App\Service\DocumentRequest'
+
+    serializer:
+        alias: App\Adapter\SerializerAdapter
+        public: true
+
+    Greenter\See:
+        public: true
+        calls:
+            - [setCachePath, ['%kernel.cache_dir%']]
+
+    Greenter\Api:
+        public: true
+        arguments:
+            - auth: '%env(AUTH_URL)%'
+              cpe: '%env(API_URL)%'
+        calls:
+            - [setBuilderOptions, [cache: '%kernel.cache_dir%']]
+
+    App\Service\FileConfigProvider:
+        arguments: ['%data_path%']
+
+    App\Service\FileDataReader:
+        public: true
+        arguments: ['%data_path%']
+
+    App\Service\ConfigProviderInterface:
+        alias: App\Service\FileConfigProvider
+        public: true
+
+    App\Service\EnvConfigProvider:
+
+    App\Service\SeeFactory:
+        public: true
+        arguments:
+            - '@App\Service\EnvConfigProvider'
+            - '@App\Service\ConfigProviderInterface'
+            - '@App\Service\FileDataReader'
+            - '@Greenter\See'
+
+    App\Service\SeeApiFactory:
+        public: true
+        arguments:
+            - '@App\Service\EnvConfigProvider'
+            - '@App\Service\ConfigProviderInterface'
+            - '@App\Service\FileDataReader'
+            - '@Greenter\Api'
+
+    App\EventSubscriber\TokenSubscriber:
+        arguments:
+            $token: '%token%'
+
+    App\Controller\v1\InvoiceController:
+        arguments:
+            - '@App\Service\DocumentRequestInterface'
+            - '@App\Service\EnvConfigProvider'
+            - '@App\Service\ConfigProviderInterface'
+            - '@JMS\Serializer\SerializerInterface'
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

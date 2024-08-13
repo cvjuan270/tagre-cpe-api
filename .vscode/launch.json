@@ -1,0 +1,14 @@
+{
+
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Depurador de Python: Archivo actual",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/src/main.py",
+            // "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

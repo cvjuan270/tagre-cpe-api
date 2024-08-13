@@ -1,0 +1,10 @@
+Greenter\Model\Despatch\AdditionalDoc:
+    properties:
+        tipoDesc:
+            type: string
+        tipo:
+            type: string
+        nro:
+            type: string
+        emisor:
+            type: string

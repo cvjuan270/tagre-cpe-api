@@ -1,0 +1,14 @@
+Greenter\Model\Sale\Detraction:
+    properties:
+        percent:
+            type: float
+        mount:
+            type: float
+        ctaBanco:
+            type: string
+        codMedioPago:
+            type: string
+        codBienDetraccion:
+            type: string
+        valueRef:
+            type: float

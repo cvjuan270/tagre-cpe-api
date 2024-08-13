@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  lycet-api:
+    container_name: lycet-api
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./lycet/
+    volumes:
+      # - ../data:/var/www/html/data
+      - ./lycet/data:/var/www/html/data
+    expose:
+      - 8000
+    ports:
+      - 8001:8000
+  
+  backend-api:
+    container_name: backend-api
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/
+    expose:
+      - 8001
+    ports:
+      - 8002:8001

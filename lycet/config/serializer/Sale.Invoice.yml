@@ -1,0 +1,106 @@
+Greenter\Model\Sale\Invoice:
+    properties:
+        tipoOperacion:
+            type: string
+        fecVencimiento:
+            type: DateTime
+        sumDsctoGlobal:
+            type: float
+        mtoDescuentos:
+            type: float
+        sumOtrosDescuentos:
+            type: float
+        descuentos:
+            type: array<Greenter\Model\Sale\Charge>
+        cargos:
+            type: array<Greenter\Model\Sale\Charge>
+        mtoCargos:
+            type: float
+        totalAnticipos:
+            type: float
+        perception:
+            type: Greenter\Model\Sale\SalePerception
+        guiaEmbebida:
+            type: Greenter\Model\Sale\EmbededDespatch
+        anticipos:
+            type: array<Greenter\Model\Sale\Prepayment>
+        detraccion:
+            type: Greenter\Model\Sale\Detraction
+        seller:
+            type: Greenter\Model\Client\Client
+        valorVenta:
+            type: float
+        subTotal:
+            type: float
+        observacion:
+            type: string
+        direccionEntrega:
+            type: Greenter\Model\Company\Address
+        ublVersion:
+            type: string
+        tipoDoc:
+            type: string
+        serie:
+            type: string
+        correlativo:
+            type: string
+        fechaEmision:
+            type: DateTime
+        company:
+            type: Greenter\Model\Company\Company
+        client:
+            type: Greenter\Model\Client\Client
+        tipoMoneda:
+            type: string
+        sumOtrosCargos:
+            type: float
+        mtoOperGravadas:
+            type: float
+        mtoOperInafectas:
+            type: float
+        mtoOperExoneradas:
+            type: float
+        mtoOperExportacion:
+            type: float
+        mtoOperGratuitas:
+            type: float
+        mtoIGVGratuitas:
+            type: float
+        mtoIGV:
+            type: float
+        mtoBaseIvap:
+            type: float
+        mtoIvap:
+            type: float
+        mtoBaseIsc:
+            type: float
+        mtoISC:
+            type: float
+        mtoBaseOth:
+            type: float
+        mtoOtrosTributos:
+            type: float
+        icbper:
+            type: float
+        totalImpuestos:
+            type: float
+        redondeo:
+            type: float
+        mtoImpVenta:
+            type: float
+        details:
+            type: array<Greenter\Model\Sale\SaleDetail>
+        legends:
+            type: array<Greenter\Model\Sale\Legend>
+        guias:
+            type: array<Greenter\Model\Sale\Document>
+        relDocs:
+            type: array<Greenter\Model\Sale\Document>
+        compra:
+            type: string
+        formaPago:
+            type: Greenter\Model\Sale\PaymentTerms
+        cuotas:
+            type: array<Greenter\Model\Sale\Cuota>
+        name:
+            type: string

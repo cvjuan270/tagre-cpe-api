@@ -1,0 +1,13 @@
+.git
+.idea
+tests
+var
+vendor
+.gitattributes
+.gitignore
+.travis.yml
+*.md
+.php_cs.dist
+.php_cs.cache
+phpunit.xml.dist
+*.md
